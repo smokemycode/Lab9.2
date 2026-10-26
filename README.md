@@ -17,6 +17,7 @@ word count, and estimated reading time as you type.
 npm install
 npm run dev
 Open http://localhost:5173 in your browser.
+```
 
 ## Project Structure
 
