@@ -1,32 +1,44 @@
-# React + TypeScript + Vite
+# Character Counter
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+An interactive React + TypeScript component that shows live character count,
+word count, and estimated reading time as you type.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Real-time statistics (characters, words, reading time)
+- Optional word-count goal with a progress bar
+- Optional min/max word validation with feedback
+- Accessible and responsive UI using Tailwind CSS
+- Performance-optimized with `useCallback` and `useMemo`
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+Open http://localhost:5173 in your browser.
 
-## Expanding the Oxlint configuration
+## Project Structure
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+src/
+  components/
+    TextInput/TextInput.tsx
+    StatsDisplay/StatsDisplay.tsx
+    CharacterCounter/CharacterCounter.tsx
+  types/index.ts
+  App.tsx
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## How Reading Time Is Calculated
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+We assume 200 words per minute (a common average) and round to one decimal.
+Empty input → 0 min.
+
+# REFLECTION
+1. How did you handle state updates when the text changed?
+  useState holds the text; useCallback keeps the change handler stable; useMemo recomputes stats only when text changes.
+2. What considerations did you make when calculating reading time?
+  Based on 200 WPM, rounded to 0.1 min, 0 for empty input.
+3. How did you ensure the UI remained responsive during rapid text input?
+  Stats derive from a single source of truth (text), and useMemo avoids redundant work during rapid input.
+4. What challenges did you face when implementing the statistics calculations?
+  Handling empty/whitespace-only input so that the counter didn't count one fake word, and capping the progress bar at 100%.
